@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.moltenwolfcub.creativetexturingtool.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EntityDataSaver"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
