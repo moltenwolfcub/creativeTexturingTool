@@ -4,6 +4,7 @@
   "package": "com.moltenwolfcub.creativetexturingtool.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockItemMixin",
     "EntityDataSaver"
   ],
   "client": [
