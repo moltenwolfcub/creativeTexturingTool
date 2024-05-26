@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +24,9 @@ public class ItemMixin {
     private void useInjector(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> info) {
         int maxReach = 100;
 
-        if (!((Item)(Object)this instanceof BlockItem)) {
+        Item This = player.getItemInHand(interactionHand).getItem();
+
+        if (!(This instanceof BlockItem blockItem)) {
             return;
         }
 
@@ -32,17 +34,15 @@ public class ItemMixin {
             return;
         }
 
-        BlockItem thisItem = (BlockItem)(Object)this;
         Vec3 eyePos = player.getEyePosition();
         Vec3 viewVec = player.getViewVector(0.0f);
         Vec3 maxReachPos = eyePos.add(viewVec.x*maxReach,viewVec.y*maxReach,viewVec.z*maxReach);
 
-        HitResult hitResult = level.clip(new ClipContext(eyePos, maxReachPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
-        Vec3 blockLocation = hitResult.getLocation();
-        BlockPos blockPos = new BlockPos((int)blockLocation.x, (int)blockLocation.y, (int)blockLocation.z);
+        BlockHitResult hitResult = level.clip(new ClipContext(eyePos, maxReachPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
+        BlockPos blockLocation = hitResult.getBlockPos();
 
 
-        level.setBlock(blockPos, thisItem.getBlock().defaultBlockState(), 2);
+        level.setBlock(blockLocation, blockItem.getBlock().defaultBlockState(), 2);
 
         info.setReturnValue(InteractionResultHolder.sidedSuccess(player.getItemInHand(interactionHand), level.isClientSide()));
     }
