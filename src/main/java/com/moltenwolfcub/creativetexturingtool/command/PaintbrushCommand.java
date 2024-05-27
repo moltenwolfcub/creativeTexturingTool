@@ -18,8 +18,15 @@ public class PaintbrushCommand {
                                         .executes(PaintbrushCommand::toggleActive)
                         ).then(
                                 Commands.literal("size")
-                                        .then(Commands.argument("size", IntegerArgumentType.integer(1))
-                                                .executes(PaintbrushCommand::changeSize)
+                                        .then(Commands.literal("set")
+                                                .then(Commands.argument("size", IntegerArgumentType.integer(1))
+                                                        .executes(PaintbrushCommand::changeSize)
+                                                )
+                                        )
+                                        .then(Commands.literal("add")
+                                                .then(Commands.argument("amount", IntegerArgumentType.integer())
+                                                        .executes(PaintbrushCommand::increaseSize)
+                                                )
                                         )
                         )
         ));
@@ -42,6 +49,20 @@ public class PaintbrushCommand {
 
         player.getPersistantData().putInt("size", size);
         context.getSource().sendSuccess(() -> Component.literal("Set paintbrush size to "+size), false);
+
+        return 1;
+    }
+
+    private static int increaseSize(CommandContext<CommandSourceStack> context) {
+        final int amount = IntegerArgumentType.getInteger(context, "amount");
+
+        DataSaver player = (DataSaver) context.getSource().getPlayer();
+        int current = player.getPersistantData().getInt("size");
+        int newSize = Math.max(current+amount, 1);
+
+
+        player.getPersistantData().putInt("size", newSize);
+        context.getSource().sendSuccess(() -> Component.literal("Increased paintbrush size by "+amount+" ("+newSize+")"), false);
 
         return 1;
     }
