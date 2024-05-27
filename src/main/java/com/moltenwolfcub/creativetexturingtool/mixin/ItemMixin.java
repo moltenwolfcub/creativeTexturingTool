@@ -66,6 +66,10 @@ public class ItemMixin {
         ArrayList<BlockPos> toUpdate = Lists.newArrayList();
 
         for (BlockPos blockPos : BlockPos.betweenClosed(centrePos.getX()-radius, centrePos.getY()-radius, centrePos.getZ()-radius, centrePos.getX()+radius, centrePos.getY()+radius, centrePos.getZ()+radius)) {
+            if (level.getBlockState(blockPos).isAir()) {
+                continue;
+            }
+
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             Clearable.tryClear(blockEntity);
             level.setBlock(blockPos, state, 2);
