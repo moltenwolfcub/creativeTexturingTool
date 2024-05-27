@@ -19,10 +19,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
 public class ItemMixin {
+    private static final int MAX_REACH = 100;
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void useInjector(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> info) {
-        int maxReach = 100;
+
+        if (!player.isCreative()) {
+            return;
+        }
 
         Item This = player.getItemInHand(interactionHand).getItem();
 
@@ -36,11 +40,10 @@ public class ItemMixin {
 
         Vec3 eyePos = player.getEyePosition();
         Vec3 viewVec = player.getViewVector(0.0f);
-        Vec3 maxReachPos = eyePos.add(viewVec.x*maxReach,viewVec.y*maxReach,viewVec.z*maxReach);
+        Vec3 maxReachPos = eyePos.add(viewVec.x*MAX_REACH,viewVec.y*MAX_REACH,viewVec.z*MAX_REACH);
 
         BlockHitResult hitResult = level.clip(new ClipContext(eyePos, maxReachPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
         BlockPos blockLocation = hitResult.getBlockPos();
-
 
         level.setBlock(blockLocation, blockItem.getBlock().defaultBlockState(), 2);
 

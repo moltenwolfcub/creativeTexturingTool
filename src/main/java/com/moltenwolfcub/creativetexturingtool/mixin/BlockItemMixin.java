@@ -25,6 +25,10 @@ public abstract class BlockItemMixin extends Item {
         Level level = blockPlaceContext.getLevel();
         InteractionHand hand = blockPlaceContext.getHand();
 
+        if (!player.isCreative()) {
+            return;
+        }
+
         if(((DataSaver)player).getPersistantData().getBoolean("active")){
             info.setReturnValue(this.use(level, player, hand).getResult());
         }
