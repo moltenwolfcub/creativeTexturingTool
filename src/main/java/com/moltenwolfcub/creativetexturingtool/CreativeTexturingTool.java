@@ -1,6 +1,6 @@
 package com.moltenwolfcub.creativetexturingtool;
 
-import com.moltenwolfcub.creativetexturingtool.command.TogglePaintbrushCommand;
+import com.moltenwolfcub.creativetexturingtool.command.PaintbrushCommand;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -17,6 +17,7 @@ public class CreativeTexturingTool implements ModInitializer {
     }
 
     public void registerCommands() {
-        TogglePaintbrushCommand.register(CommandRegistrationCallback.EVENT);
+        CreativeTexturingTool.LOGGER.info("Registering Commands");
+        PaintbrushCommand.register(CommandRegistrationCallback.EVENT);
     }
 }

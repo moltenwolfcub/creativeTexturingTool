@@ -1,6 +1,5 @@
 package com.moltenwolfcub.creativetexturingtool.mixin;
 
-import com.moltenwolfcub.creativetexturingtool.CreativeTexturingTool;
 import com.moltenwolfcub.creativetexturingtool.DataSaver;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -19,14 +18,14 @@ public abstract class EntityDataSaver implements DataSaver {
     @Inject(method = "saveWithoutId", at = @At("HEAD"))
     protected void WriteMethodInject(CompoundTag nbt, CallbackInfoReturnable<CompoundTag> info) {
         if(persistantData != null) {
-            nbt.put(CreativeTexturingTool.MODID+ ".painting_data", persistantData);
+            nbt.put("PaintingData", persistantData);
         }
     }
 
     @Inject(method = "load", at = @At("HEAD"))
     protected void ReadMethodInject(CompoundTag nbt, CallbackInfo info) {
-        if(nbt.contains(CreativeTexturingTool.MODID+ ".painting_data", 10)) {
-            persistantData = nbt.getCompound(CreativeTexturingTool.MODID+ ".painting_data");
+        if(nbt.contains("PaintingData", 10)) {
+            persistantData = nbt.getCompound("PaintingData");
         }
     }
 
