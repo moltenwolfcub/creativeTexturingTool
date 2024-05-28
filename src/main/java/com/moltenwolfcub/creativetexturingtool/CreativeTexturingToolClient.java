@@ -55,36 +55,9 @@ public class CreativeTexturingToolClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (toggle.consumeClick()) {
-                if (client.hasSingleplayerServer()){
-                    MinecraftServer server = client.getSingleplayerServer();
-                    ServerPlayer player = server.getPlayerList().getPlayer(client.player.getUUID());
-                    toggleActive(player);
-
-                } else {
-                    client.player.sendSystemMessage(Component.literal("Can't use keybinds in server setting."));
-                }
-            }
-            while (increaseSize.consumeClick()) {
-                if (client.hasSingleplayerServer()){
-                    MinecraftServer server = client.getSingleplayerServer();
-                    ServerPlayer player = server.getPlayerList().getPlayer(client.player.getUUID());
-                    increaseSize(player);
-
-                } else {
-                    client.player.sendSystemMessage(Component.literal("Can't use keybinds in server setting."));
-                }
-            }
-            while (decreaseSize.consumeClick()) {
-                if (client.hasSingleplayerServer()){
-                    MinecraftServer server = client.getSingleplayerServer();
-                    ServerPlayer player = server.getPlayerList().getPlayer(client.player.getUUID());
-                    decreaseSize(player);
-
-                } else {
-                    client.player.sendSystemMessage(Component.literal("Can't use keybinds in server setting."));
-                }
-            }
+            handleKeybind(toggle, CreativeTexturingToolClient::toggleActive, client);
+            handleKeybind(increaseSize, CreativeTexturingToolClient::increaseSize, client);
+            handleKeybind(decreaseSize, CreativeTexturingToolClient::decreaseSize, client);
         });
     }
 
