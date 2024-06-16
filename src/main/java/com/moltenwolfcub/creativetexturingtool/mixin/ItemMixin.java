@@ -28,7 +28,7 @@ import java.util.ArrayList;
 @Mixin(Item.class)
 public class ItemMixin {
     @Unique
-    private static final int MAX_REACH = 100;
+    private static final int MAX_REACH = 500;
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void useInjector(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> info) {
